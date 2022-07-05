@@ -1,0 +1,1140 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    APP statistika
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+ 
+  <link href="{% static 'assets/css/nucleo-icons.css' %}" rel="stylesheet" />
+ 
+  <link href="{% static 'assets/css/black-dashboard.css' %}" rel="stylesheet" />
+
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
+	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/regression/1.3.0/regression.min.js" crossorigin="anonymous"></script>
+
+<style>
+
+
+			#animacija2 {
+			   position: relative;
+			   animation: mymove 2s ;
+			   animation-delay: 0.5s;
+				}
+			
+			@keyframes mymove {
+			from {top: -350px;}
+				 to {top: 0px;}
+			}
+
+
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 2px solid black;
+}
+
+th, td {
+  padding: 4px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+table td {
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+}
+
+tr:hover {background-color:#FFFAFA;}
+
+th {
+  background-color: #4682B4;
+  color: #FFF5EE;
+}
+
+#skrol1 {
+height:300px;
+  overflow-y: scroll;
+}
+
+#ekstrem {
+height:150px;
+
+}
+
+#skrol2 {
+height:400px;
+  overflow-y: scroll;
+}
+#dijagram {
+height:400px;
+  
+}
+
+#skrol3 {
+height:400px;
+  overflow-y: scroll;
+}
+#DIE_chart {
+height:400px;
+  
+}
+
+hr{
+    border:0;
+    margin:0;
+    width:100%;
+    height:2px;
+    background:#d346b1;
+}
+</style>
+
+<script>
+
+
+#animacija2 {
+position: relative;
+animation: mymove 5s ;
+animation-delay: 0.1s;
+}
+
+
+</script>
+
+</head>
+
+ 
+	<table style="display:none"  id="kontrola" class="table table-hover">
+<thead>
+<tr class="table-danger">
+
+
+<th class="th-sm" onclick="sortTable(1);" >mjesec</th>
+<th class="th-sm" onclick="sortTable(4);" >Max [MW]</th>
+<th class="th-sm" onclick="sortTable(2);" >Sr.vr [MW]</th>
+<th class="th-sm" onclick="sortTable(3);" >Min [MW]</th>
+
+</tr>
+</thead>
+		<tbody>
+
+		{% for i in df_po_utakmici_graf  %}
+		<tr class="table-danger">
+		 <td>{{i.0}}</td> <td>{{i.1}}</td> <td>{{i.2}}</td> <td>{{i.3}}</td>
+		 </tr>
+		{% endfor %}
+
+		</tbody>
+</table>
+
+<script>
+
+var x = document.getElementById("kontrola").rows.length;
+//alert(x)
+
+if (x == 1) {
+$("#animacija2").hide();}
+
+if (x.length > 1){
+$('html,body').animate({
+scrollTop: $("#animacija3").offset().top},
+'slow');
+}
+
+</script>
+
+<body class="">
+  <div class="wrapper">
+    <div class="sidebar">
+      <!--
+        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
+    -->
+      <div class="sidebar-wrapper">
+        <div class="logo">
+          
+          <a href="javascript:void(0)" class="simple-text logo-normal">
+            Dodatne mogućnosti
+          </a>
+        </div>
+        <ul class="nav">
+          <li >
+            <a href="http://10.138.5.17:5555/">
+              <i class="tim-icons icon-chart-pie-36"></i>
+              <p>Osnovno</p>
+            </a>
+          </li>
+          <li>
+            <a href="http://10.138.5.17:5555/dp/">
+              <i class="tim-icons icon-atom"></i>
+              <p>Igrači</p>
+            </a>
+          </li>
+          <li>
+            <a href="http://10.129.64.175:4500/kalkulator/usporedba/">
+              <i class="tim-icons icon-pin"></i>
+              <p>Ekipe</p>
+            </a>
+          </li>
+          <li>
+            <a href="http://10.129.64.175:4500/kalkulator/scada/">
+              <i class="tim-icons icon-bell-55"></i>
+              <p>Utakmice</p>
+            </a>
+          </li>
+          <li>
+            <a href="http://10.129.64.175:4013/izvjestaji/">
+              <i class="tim-icons icon-single-02"></i>
+              <p>Rekordi</p>
+            </a>
+          </li>
+          <li>
+            <a href="http://10.129.64.175:2020/2021/opterecenje2021/">
+              <i class="tim-icons icon-puzzle-10"></i>
+              <p>Legende</p>
+            </a>
+          </li>
+          <li>
+            <a href="http://10.138.5.17:5000/ami">
+              <i class="tim-icons icon-align-center"></i>
+              <p>Statistika</p>
+            </a>
+          </li>
+          <li>
+            <a href="http://10.129.64.175:2020/razmjena_pocetna">
+              <i class="tim-icons icon-world"></i>
+              <p>All Stars</p>
+            </a>
+          </li>
+          <li >
+            <a href="http://10.138.5.17:5555/stats/">
+              <i class="tim-icons icon-spaceship"></i>
+              <p>Hrvati u NBA</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+       <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <div class="navbar-toggle d-inline">
+              <button type="button" class="navbar-toggler">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+              </button>
+            </div>
+            <a class="navbar-brand"  href="javascript:void(0)"><i class="tim-icons icon-atom text-info "></i> NBA stats</a>
+          </div>
+          
+          <div class="collapse navbar-collapse" id="navigation">
+            <ul class="navbar-nav ml-auto">
+             
+			 
+              <li class="dropdown nav-item">
+                <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                  <div class="notification d-none d-lg-block d-xl-block"></div>
+                  <i class="tim-icons icon-bullet-list-67"></i> Odabir lige
+                  <p class="d-lg-none">
+                    
+                  </p>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
+				 <li class="nav-link"><a href="HEP" class="nav-item dropdown-item">NBA</a></li>
+				 <hr>
+                  <li class="nav-link"><a href="4001" class="nav-item dropdown-item">ABA</a></li>
+                  <li class="nav-link"><a href="4002" class="nav-item dropdown-item">KS HZHB</a></li>
+                  <li class="nav-link"><a href="4003" class="nav-item dropdown-item">Hrvatska</a></li>
+                  <li class="nav-link"><a href="4004" class="nav-item dropdown-item">Euro League</a></li>
+				
+                  
+                </ul>
+              </li>
+             
+              <li class="separator d-lg-none"></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Navbar -->
+      <div class="content" >
+	  <h2 class="card-title"><i class="tim-icons icon-cloud-download-93 text-info"></i> Odabir igrača</h2>
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-chart">
+              <div class="card-header ">
+                <div class="row">
+                  <div class="col-sm-9 text-left">
+                    <h5 class="card-category">Upiši ime ili prezime traženog igrača</h5>
+                    <h2 class="card-title"><i class="tim-icons icon-send text-success"></i>Upiši ime ili prezime igrača + tražena sezona </h2>
+                  </div>
+                  <div class="col-sm-3">
+                  
+                  </div>
+                </div>
+              </div>
+              <div class="row ">               
+				 <div class="col-lg-12">
+            <div class="card card-chart">
+             
+              <div class="card-body">
+               
+                 <form method="post" >
+
+
+
+{% load widget_tweaks %}
+{% csrf_token %}
+
+
+{% for hidden_field in form.hidden_fields %}
+{{ hidden_field }}
+{% endfor %}
+
+{% if form.non_field_errors %}
+<div class="alert alert-danger" role="alert">
+{% for error in form.non_field_errors %}
+{{ error }}
+{% endfor %}
+</div>
+{% endif %}
+
+{% for field in form.visible_fields %}
+<div class="form-group">
+{{ field.label_tag }}
+
+{% if form.is_bound %}
+{% if field.errors %}
+{% render_field field class="form-control is-invalid" %}
+{% for error in field.errors %}
+<div class="invalid-feedback">
+{{ error }}
+</div>
+{% endfor %}
+{% else %}
+{% render_field field class="form-control is-valid" %}
+{% endif %}
+{% else %}
+{% render_field field class="form-control" %}
+{% endif %}
+
+{% if field.help_text %}
+<small class="form-text text-muted">{{ field.help_text }}</small>
+{% endif %}
+</div>
+{% endfor %}
+
+
+<!--	  <input type="text" class="date" />-->
+
+
+<button type="submit" class="btn btn-primary btn-sm">Pokreni statistikču analizu za tražene ulazne parametre</button>
+
+</form>
+               
+              </div>
+            </div>
+          </div>
+		  
+		  
+    
+              </div>
+            </div>
+          </div>
+        </div>
+		<hr><br>
+		<h2 class="card-title"><i class="tim-icons icon-cloud-upload-94 text-info"></i> Sezonska statistika {{sezona}}</h2>
+		
+         <div class="row"   id="animacija2" >
+
+          <div class="col-lg-4"  >
+            <div class="card card-chart">
+              <div class="card-header">
+                <h5 class="card-category">Osnovni statistički pokazatelji učinka u sezoni</h5>
+                <h3 class="card-title"><i class="tim-icons icon-chart-bar-32 text-primary"></i> Season avg.</h3>
+				
+              </div>
+              <div class="card-body">
+			 <!--<hr>
+                <h4 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i> Sr.Vr.={{opisno_danas.1.1}} MW</h4>
+				<hr>
+				 <h4 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i> Min.={{opisno_danas.3.1}} MW</h4>
+				 <hr>
+				  <h4 class="card-title"><i class="tim-icons icon-send text-success"></i> Standardna devijacija={{opisno_danas.2.1}}</h4>
+				<hr>	-->
+  <canvas id="CountryChart"  id="ekstrem" ></canvas>
+
+
+
+<script>
+
+
+	var poeni = parseFloat("{{ poeni }}")
+	var asisti = parseFloat("{{ asisti }}")				
+	var skok = parseFloat("{{ skok }}")
+	
+						
+						
+	var data = [poeni,asisti,skok];
+						
+						
+ gradientBarChartConfiguration = {
+      maintainAspectRatio: true,
+      legend: {
+        display: false
+      },
+
+      tooltips: {
+        backgroundColor: '#f5f5f5',
+        titleFontColor: '#333',
+        bodyFontColor: '#666',
+        bodySpacing: 4,
+        xPadding: 12,
+        mode: "nearest",
+        intersect: 0,
+        position: "nearest"
+      },
+      responsive: true,
+      scales: {
+        yAxes: [{
+
+          gridLines: {
+            drawBorder: false,
+            color: 'rgba(29,140,248,0.1)',
+            zeroLineColor: "transparent",
+          },
+          ticks: {
+            suggestedMin: 60,
+            suggestedMax: poeni,
+            padding: 20,
+            fontColor: "#9e9e9e"
+          }
+        }],
+
+        xAxes: [{
+
+          gridLines: {
+            drawBorder: false,
+            color: 'rgba(29,140,248,0.1)',
+            zeroLineColor: "transparent",
+          },
+          ticks: {
+            padding: 20,
+            fontColor: "#9e9e9e"
+          }
+        }]
+      }
+    };
+    var ctx2 = document.getElementById("CountryChart").getContext("2d");
+
+    var gradientStroke = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
+    gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
+    gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
+
+
+    var CountryChart = new Chart(ctx2, {
+      type: 'bar',
+      responsive: true,
+      legend: {
+        display: false
+      },
+      data: {
+        labels: ['Poeni', 'Asistencije', 'Skokovi'],
+        datasets: [{
+          label:"Vrj",
+          fill: true,
+          backgroundColor: gradientStroke,
+          hoverBackgroundColor: gradientStroke,
+          borderColor: '#1f8ef1',
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          data: data,
+        }]
+      },
+      options: gradientBarChartConfiguration
+    });
+
+</script>	
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8" >
+            <div class="card card-chart">
+              <div class="card-header">
+                <h5 class="card-category" >Sezonski prosjek pojedinih elemenata košarkaške igre</h5>
+                <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info"></i> Season {{sezona}} </h3>
+              </div>
+              <div class="card-body">
+               
+			   
+			   
+			   
+			   
+			     <div class="table"  id="skrol1">
+                  <table class="table tablesorter ">
+                   
+                   {{ statistika | safe }}
+                  </table>
+				  
+				
+                </div>
+				
+				
+			   
+              </div>
+            </div>
+          </div>
+         
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-md-12">
+            <div class="card card-tasks">
+              <div class="card-header ">
+                <h3 class="card-title"> <i class="tim-icons icon-align-center text-success "></i>Utakmica po utakmica</h3>
+          
+               
+              </div>
+              <div class="card-body">
+			   <div class="table"  id="skrol1">
+			  <table class="table tablesorter ">
+			    {{ df_po_utakmici | safe }}
+				  </table>
+			 </div>
+						
+               
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12">
+            <div class="card ">
+              <div class="card-header">
+                <h3 class="card-title" ><i class="tim-icons icon-sound-wave text-success "></i> Trend postignutih poena</h3>
+              </div>
+              <div class="card-body">
+               <canvas id="line_chart" id="dijagram"></canvas>
+			   			  <script>
+
+	
+var vrijednost_1 = [];
+{%for redak in df_po_utakmici_graf %}
+vrijednost_1.push("{{redak.16}}");
+{%endfor%}
+
+
+var vrijeme = [];
+{%for redak in df_po_utakmici_graf %}
+vrijeme.push("{{redak.20}}");
+{%endfor%}
+//alert(vrijeme1.length)	
+
+var naziv1 =	[];
+naziv1.push("Kolo")	
+
+var ctx3 = document.getElementById('line_chart').getContext("2d");
+
+var gradientStroke = ctx3.createLinearGradient(500, 0, 100, 0);
+gradientStroke.addColorStop(0, '#80b6f4');
+gradientStroke.addColorStop(1, '#f49080');
+
+var gradientFill = ctx3.createLinearGradient(500, 0, 100, 0);
+gradientFill.addColorStop(0, "rgba(128, 182, 244, 0.6)");
+gradientFill.addColorStop(1, "rgba(244, 144, 128, 0.6)");
+
+var line_chart = new Chart(ctx3, {
+    type: 'line',
+    data: {
+        labels: vrijeme,
+        datasets: [{
+            label: "Kolo",
+            borderColor: gradientStroke,
+            pointBorderColor: gradientStroke,
+            pointBackgroundColor: gradientStroke,
+            pointHoverBackgroundColor: gradientStroke,
+            pointHoverBorderColor: gradientStroke,
+            pointBorderWidth: 7,
+            pointHoverRadius: 10,
+            pointHoverBorderWidth: 1,
+            pointRadius: 0.8,
+            fill: true,
+            backgroundColor: gradientFill,
+            borderWidth: 2,
+            data:vrijednost_1
+        }]
+    },
+    options: {
+	
+	responsive:true,
+    maintainAspectRatio: true,
+        legend: {
+            position: "bottom",
+			display: false
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                   
+                    fontStyle: "bold",
+                    beginAtZero: true,
+                    maxTicksLimit: 5,
+                    padding: 20
+                },
+                gridLines: {
+                    drawTicks: false,
+                    display: false
+                }
+
+            }],
+            xAxes: [{
+                gridLines: {
+                    zeroLineColor: "transparent"
+                },
+                ticks: {
+                    padding: 20,
+                    
+                    fontStyle: "bold"
+                }
+            }]
+        }
+    }
+});
+</script>
+			
+              </div>
+            </div>
+          </div>
+        </div>
+		
+		
+		<hr><br>
+		<h2 class="card-title"><i class="tim-icons icon-cloud-upload-94 text-info"></i> Korelacija asistencija / skokova / poena - regresijska analiza</h2>
+		
+		 <div class="row">
+          <div class="col-lg-12 col-md-12">
+            <div class="card card-chart">
+              <div class="card-header">
+                <h5 class="card-category">Poeni su na x-osi poredani uzlazno</h5>
+                <h3 class="card-title"><i class="tim-icons icon-chart-bar-32 text-primary"></i> Interaktivni graf - Utjecaj broja poena na asistencije i skokove</h3>
+				
+              </div>
+              <div class="card-body">
+			
+ <canvas id="regresija"></canvas>
+
+
+<script>
+
+
+
+var asist = [];
+{%for redak in df_po_utakmici_stats %}
+asist.push("{{redak.1}}");
+{%endfor%}	
+
+var kosevi = [];
+{%for redak in df_po_utakmici_stats %}
+kosevi.push("{{redak.16}}");
+{%endfor%}
+
+var skokovi = [];
+{%for redak in df_po_utakmici_stats %}
+skokovi.push("{{redak.17}}");
+{%endfor%}
+	
+	
+var resultLineChart = {
+  "series": [  "Asistencije", "Skokovi", "Asistencije_trend_regresije", "Skokovi_trend_regresije"],
+  "labels": kosevi,
+  "data": [
+    asist,
+    skokovi,
+  ]
+};
+
+const getRegression = (data, degre) => {
+  degre = degre || 2;
+  let dataRegression = [];
+  data.forEach((element, index) => dataRegression.push([index + 1, element]));
+
+  let resultRegression = [];
+  regression('polynomial', dataRegression, degre).points.forEach((element) =>
+    resultRegression.push(Math.ceil(element[1] * 100) / 100)
+  );
+  return resultRegression;
+};
+
+let reportsRegression = getRegression(resultLineChart.data[0],4);
+resultLineChart.data.push([]);
+reportsRegression.forEach(function(item) {
+  resultLineChart.data[2].push(item)
+});
+
+let commitsRegression = getRegression(resultLineChart.data[1], 3);
+resultLineChart.data.push([]);
+commitsRegression.forEach(function(item) {
+  resultLineChart.data[3].push(item)
+});
+
+var lineChartData = {
+  labels: resultLineChart.labels,
+  datasets: [{
+    // Nombre moyen de reports par correction
+    label: resultLineChart.series[0],
+    backgroundColor: "rgba(255, 108, 110, 0.1)",
+    borderColor: "rgba(255, 108, 110, 1)",
+    pointBackgroundColor: "rgba(255, 108, 110, 0.5)",
+    pointBorderColor: "#fff",
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: "rgba(255, 108, 110, 0.5)",
+    pointBorderWidth: 1,
+    yAxisID: 'y-axis-1',
+    data: resultLineChart.data[0]
+  }, {
+    label: resultLineChart.series[1],
+    backgroundColor: "rgba(50, 155, 255, 0.2)",
+    borderColor: "rgba(50, 155, 255, 1)",
+    pointBackgroundColor: "rgba(50, 155, 255, 0.5)",
+    pointBorderColor: "#fff",
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: "rgba(50, 155, 255, 0.5)",
+    pointBorderWidth: 1,
+    yAxisID: 'y-axis-2',
+    data: resultLineChart.data[1]
+  }, {
+    // Régression linéaire nb moyen de reports 
+    label: resultLineChart.series[2],
+    fill: false,
+    backgroundColor: "rgba(255, 168, 110, 0.2)",
+    borderColor: "#FF0000",
+    pointBackgroundColor: "#000000",
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: "rgba(255, 168, 110, 1)",
+    borderWidth: 4,
+    pointHitRadius: 5,
+    pointRadius: 0.5,
+    yAxisID: 'y-axis-1',
+    data: resultLineChart.data[2]
+  }, {
+    // 
+    label: resultLineChart.series[3],
+    backgroundColor: "rgba(50, 215, 255, 0.2)",
+    borderColor: "#0000FF",
+    pointBackgroundColor: "rgba(50, 215, 255, 1)",
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: "rgba(50, 215, 255, 1)",
+    borderWidth: 4,
+    pointHitRadius: 5,
+    pointRadius: 0.5,
+    yAxisID: 'y-axis-2',
+    data: resultLineChart.data[3]
+  }]
+};
+
+var configLineChart = {
+  type: 'line',
+  data: lineChartData,
+  options: {
+    tooltips: {
+      mode: 'label',
+      bodySpacing: 6,
+      titleMarginBottom: 10,
+      titleFontSize: 14,
+      bodyFontSize: 14
+    },
+    hover: {
+      mode: 'dataset'
+    },
+    maintainAspectRatio: true,
+    scales: {
+      yAxes: [{
+        id: 'y-axis-1',
+        type: 'linear',
+        position: "left",
+		
+		scaleLabel: {
+        display: true,
+		fontSize: 14,
+        labelString: 'broj asistencija'
+      },
+        ticks: {
+          beginAtZero: true,
+          //stepSize: 15
+        },
+        gridLines: {
+          color: "rgba(0, 0, 0, 0.06)",
+          zeroLineColor: "rgba(0,0,0,0.1)",
+          offsetGridLines: false
+        }
+      }, {
+        id: 'y-axis-2',
+        type: 'linear',
+        position: 'right',
+		scaleLabel: {
+        display: true,
+		fontSize: 14,
+        labelString: 'broj skokova'
+      },
+        ticks: {
+          beginAtZero: true,
+          //stepSize: 15
+        },
+        gridLines: {
+          drawOnChartArea: false
+        }
+      }],
+      xAxes: [{
+        ticks: {
+          minRotation: 35,
+          maxRotation: 60
+        },
+        gridLines: {
+          color: "rgba(0, 0, 0, 0.06)",
+          zeroLineColor: "rgba(0,0,0,0.1)",
+          offsetGridLines: false
+        }
+      }]
+    },
+    elements: {
+      line: {
+        borderWidth: 2
+      },
+      point: {
+        radius: 4,
+        borderColor: "#ffffff",
+      }
+    },
+    legend: {
+      display: true, // default
+      position: 'bottom',
+      labels: {
+        boxWidth: 20,
+        padding: 20
+      }
+    }
+  }
+};
+
+var ctxLineChart = document.getElementById("regresija").getContext("2d");
+new Chart(ctxLineChart, configLineChart);
+
+</script>
+
+              </div>
+            </div>
+          </div>
+		  
+		  
+		  
+		   </div>
+        
+         
+        </div>
+		
+		
+      </div>
+      <footer class="footer">
+        <div class="container-fluid">
+         
+          <div class="copyright">
+         2022</a> 
+          </div>
+        </div>
+      </footer>
+	  
+	 
+
+
+
+
+
+    </div>
+  </div>
+ 
+  <!--   Core JS Files   -->
+  <script src="{% static 'assets/js/core/jquery.min.js' %}"></script>
+  <script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+  <script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+  <script src="{% static 'assets/js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
+ 
+
+  <!-- Chart JS -->
+  <script src="{% static 'assets/js/plugins/chartjs.min.js' %}"></script>
+  <!--  Notifications Plugin    -->
+  <script src="{% static 'assets/js/plugins/bootstrap-notify.js' %}"></script>
+  <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+
+  <script>
+    $(document).ready(function() {
+      $().ready(function() {
+        $sidebar = $('.sidebar');
+        $navbar = $('.navbar');
+        $main_panel = $('.main-panel');
+
+        $full_page = $('.full-page');
+
+        $sidebar_responsive = $('body > .navbar-collapse');
+        sidebar_mini_active = true;
+        white_color = false;
+
+        window_width = $(window).width();
+
+        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+
+
+        $('.fixed-plugin a').click(function(event) {
+          if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            } else if (window.event) {
+              window.event.cancelBubble = true;
+            }
+          }
+        });
+
+        $('.fixed-plugin .background-color span').click(function() {
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data', new_color);
+          }
+
+          if ($main_panel.length != 0) {
+            $main_panel.attr('data', new_color);
+          }
+
+          if ($full_page.length != 0) {
+            $full_page.attr('filter-color', new_color);
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr('data', new_color);
+          }
+        });
+
+        $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function() {
+          var $btn = $(this);
+
+          if (sidebar_mini_active == true) {
+            $('body').removeClass('sidebar-mini');
+            sidebar_mini_active = false;
+            blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
+          } else {
+            $('body').addClass('sidebar-mini');
+            sidebar_mini_active = true;
+            blackDashboard.showSidebarMessage('Sidebar mini activated...');
+          }
+
+          // we simulate the window Resize so the charts will get updated in realtime.
+          var simulateWindowResize = setInterval(function() {
+            window.dispatchEvent(new Event('resize'));
+          }, 180);
+
+          // we stop the simulation of Window Resize after the animations are completed
+          setTimeout(function() {
+            clearInterval(simulateWindowResize);
+          }, 1000);
+        });
+
+        $('.switch-change-color input').on("switchChange.bootstrapSwitch", function() {
+          var $btn = $(this);
+
+          if (white_color == true) {
+
+            $('body').addClass('change-background');
+            setTimeout(function() {
+              $('body').removeClass('change-background');
+              $('body').removeClass('white-content');
+            }, 900);
+            white_color = false;
+          } else {
+
+            $('body').addClass('change-background');
+            setTimeout(function() {
+              $('body').removeClass('change-background');
+              $('body').addClass('white-content');
+            }, 900);
+
+            white_color = true;
+          }
+
+
+        });
+
+        $('.light-badge').click(function() {
+          $('body').addClass('white-content');
+        });
+
+        $('.dark-badge').click(function() {
+          $('body').removeClass('white-content');
+        });
+      });
+    });
+  </script>
+
+  
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
+	
+
+
+
+
+</body>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script>
+	var chartColors = {
+	red: 'rgb(255, 99, 132)',
+	orange: 'rgb(255, 159, 64)',
+	yellow: 'rgb(255, 205, 86)',
+	green: 'rgb(75, 192, 192)',
+	blue: 'rgb(54, 162, 235)',
+	purple: 'rgb(153, 102, 255)',
+	grey: 'rgb(201, 203, 207)'
+};
+
+
+
+	
+function randomScalingFactor() {
+	//var cities = {{ city_array|safe }};
+	var min = {{pocetak_vrj|safe}}
+	var max = {{kraj_vrj|safe}}
+	//alert(pocetak)
+	//alert(cities)
+	//alert(Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100)
+
+	
+	return Math.floor(Math.random() * (max - min) + min) ;
+	
+}
+
+function onRefresh(chart) {
+	chart.config.data.datasets.forEach(function(dataset) {
+		dataset.data.push({
+			x: Date.now(),
+			y: randomScalingFactor()
+		});
+	});
+}
+
+
+ var gradientStroke4 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke4.addColorStop(1, 'rgba(29,140,248,0.2)');
+    gradientStroke4.addColorStop(0.4, 'rgba(29,140,248,0.0)');
+    gradientStroke4.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
+	
+	
+var color = Chart.helpers.color;
+var config = {
+	type: 'line',
+	data: {
+		datasets: [{
+			label: 'Simulacija trenutnog opterećenja',
+			//backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
+			backgroundColor: gradientStroke4,
+            hoverBackgroundColor: gradientStroke4,
+			borderColor: chartColors.blue,
+			fill: true,
+			cubicInterpolationMode: 'monotone',
+			data: []
+		}]
+	},
+	options: { 
+	legend: {
+            position: "bottom",
+			display: false
+        },
+		title: {
+			display: false,
+			text: 'ODS -  simulacija trenutnog opterećenja '
+		},
+		scales: {
+			xAxes: [{
+				type: 'realtime',
+				realtime: {
+					duration: 60000,
+					refresh: 1000,
+					delay: 0,
+					onRefresh: onRefresh
+				}
+			}],
+			yAxes: [{
+				scaleLabel: {
+					display: true,
+					labelString: 'MW'
+				}
+			}]
+		},
+		tooltips: {
+			mode: 'nearest',
+			intersect: false
+		},
+		hover: {
+			mode: 'nearest',
+			intersect: false
+		}
+	}
+};
+
+window.onload = function() {
+	var ctx = document.getElementById('myCharto').getContext('2d');
+	window.myCharto = new Chart(ctx, config);
+};
+
+document.getElementById('randomizeData').addEventListener('click', function() {
+	config.data.datasets.forEach(function(dataset) {
+		dataset.data.forEach(function(dataObj) {
+			dataObj.y = randomScalingFactor();
+		});
+	});
+	window.myCharto.update();
+});
+
+
+
+	</script>
+	
+	
+
+
+</html>
