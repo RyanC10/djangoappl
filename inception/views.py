@@ -29,34 +29,43 @@ class nba(TemplateView):
             ime=  "{0}".format( form.cleaned_data['ime'])
             sezona=  "{0}".format( form.cleaned_data['sezona'])
            
-            print(ime)
-            print(sezona)
+            #print(ime)
+            #print(sezona)
             
            
 
         ##-------------------------------------------------------------------------------------------------------------   
 
         ime_igraca="bogdanovic"
-        print(ime)
-        api_igraci_svi = 'http://www.balldontlie.io/api/v1/players?search='+str(ime)+'' 
+        #print(ime)
+        x = ime.split()
+        ime = x[0]
+        #print(ime)
+        prezime=x[1]
+        api_igraci_svi = 'http://www.balldontlie.io/api/v1/players?search='+str(prezime)+'' 
         json_data_0 = requests.get(api_igraci_svi, proxies=noProxy).json()        
         df_svi_igraci=pd.DataFrame(json_data_0.items())
         df_svi_igraci.columns =['indeks', 'kolone']
         df_svi_igraci = df_svi_igraci[['kolone']]
+        #print(df_svi_igraci)
         podaci=df_svi_igraci.iloc[0][0]
         df_svi_igraci = pd.DataFrame(podaci)
 
-        print(df_svi_igraci.head())
+        #print(df_svi_igraci)
+        #print("----------------------------")
+
+        df_svi_igraci =df_svi_igraci[df_svi_igraci['first_name'].str.contains(ime)]
+        #print(df_svi_igraci)
 
 
 
-        print("==================================")
-        print("==================================")
+        #print("==================================")
+        #print("==================================")
         #id_igraca=df_svi_igraci.iloc[0][0]
         #print(id_igraca)
         igraci_pojedinacno=list(df_svi_igraci.id.unique())
-        print("Ukupno_igrača naziva "+str(ime_igraca)+":")
-        print(len(igraci_pojedinacno))
+        #print("Ukupno_igrača naziva "+str(ime_igraca)+":")
+        #print(len(igraci_pojedinacno))
         id_igraca_prvog=igraci_pojedinacno[0]
         #print(igraci)
         df_ukupno=pd.DataFrame()
@@ -65,7 +74,7 @@ class nba(TemplateView):
               json_data_1 = requests.get(api_pojedini_igraci, proxies=noProxy).json()        
               df_igrac=pd.DataFrame.from_dict(json_data_1)
               df_igrac.reset_index(level=0, inplace=True)
-              print(df_igrac.head(1))
+              #print(df_igrac.head(1))
               df_igrac=df_igrac.head(1)
               
               statistika = 'http://www.balldontlie.io/api/v1/season_averages?season='+str(sezona)+'&player_ids[]='+str(i)+'' 
@@ -77,20 +86,20 @@ class nba(TemplateView):
               podaci2=df_statistika.iloc[0][0]
               df_statistika = pd.DataFrame(podaci2)
               df_statistika = df_statistika.rename(columns={'player_id': 'id'})
-              print(df_statistika.head())
-              print("==================================")
-              print("==================================")
+              #print(df_statistika.head())
+              #print("==================================")
+              #print("==================================")
               
               if not df_statistika.empty:
                   ukupno=df_igrac.merge(df_statistika, how='right', on='id')
-                  print(ukupno.head())
-                  print("\n\n")
+                  #print(ukupno.head())
+                  #print("\n\n")
                   ukupno = ukupno.drop(['index','id'], axis=1)  
                   df_ukupno=df_ukupno.append(ukupno)
 
 
-        print("Nakon svega")
-        print(df_ukupno)
+        #print("Nakon svega")
+        #print(df_ukupno)
         ekstremi=df_ukupno
         skok=ekstremi.iloc[0][18]
         asisti=ekstremi.iloc[0][19]
@@ -101,8 +110,8 @@ class nba(TemplateView):
         df_ukupno = df_ukupno.to_html()
 
 
-        print("Po tekmi:")
-        potekmi = 'http://www.balldontlie.io/api/v1/stats?seasons[]='+str(sezona)+'&player_ids[]='+str(id_igraca_prvog)+'' 
+        #print("Po tekmi:")
+        potekmi = 'http://www.balldontlie.io/api/v1/stats?seasons[]='+str(sezona)+'&player_ids[]='+str(id_igraca_prvog)+'&per_page=82' 
         json_data_3 = requests.get(potekmi, proxies=noProxy).json()        
         df_po_utakmici=pd.DataFrame(json_data_3.items())
         #print(df_statistika.head())
@@ -112,12 +121,14 @@ class nba(TemplateView):
         df_po_utakmici = pd.DataFrame(podaci3)
         #df_po_utakmici = df_po_utakmici.rename(columns={'player_id': 'id'})
         df_po_utakmici = df_po_utakmici.drop(['game','player','team'], axis=1)
-        print(df_po_utakmici.head())
+        #print(df_po_utakmici.head())
+        duzina_sezone=len(df_po_utakmici)
+        print(len(df_po_utakmici))
         df_po_utakmici_stats=df_po_utakmici
         
         df_po_utakmici_graf=df_po_utakmici
         kolo=[]
-        for i in range(1,26):
+        for i in range(1,83):
             kolo.append(i)
         df_po_utakmici_graf['Kolo']=kolo
         df_po_utakmici_graf=df_po_utakmici_graf.values
