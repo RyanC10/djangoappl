@@ -125,10 +125,10 @@ class nba(TemplateView):
         duzina_sezone=len(df_po_utakmici)
         print(len(df_po_utakmici))
         df_po_utakmici_stats=df_po_utakmici
-        
+        nastupi=len(df_po_utakmici)+1
         df_po_utakmici_graf=df_po_utakmici
         kolo=[]
-        for i in range(1,83):
+        for i in range(1,nastupi):
             kolo.append(i)
         df_po_utakmici_graf['Kolo']=kolo
         df_po_utakmici_graf=df_po_utakmici_graf.values
