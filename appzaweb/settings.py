@@ -28,7 +28,7 @@ SECRET_KEY = '9+bee81pz%gpf0g=atx5j$*0@uf^_vw=d8#5-8m8$*%m8fmoxc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://web-production-cf62.up.railway.app']
 
 
 # Application definition
@@ -128,3 +128,5 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 django_heroku.settings(locals())
+
+CSRF_TRUSTED_ORIGINS = ['https://web-production-cf62.up.railway.app']
