@@ -129,4 +129,4 @@ STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 django_heroku.settings(locals())
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-cf62.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://djangoappl-production.up.railway.app']
