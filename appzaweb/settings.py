@@ -130,5 +130,6 @@ STATIC_URL = '/static/'
 
 django_heroku.settings(locals())
 
-STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE='whitenoise.storage.CompressedStaticFilesStorage'
+#STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
 ##CSRF_TRUSTED_ORIGINS = ['https://djangoappl-production.up.railway.app']
