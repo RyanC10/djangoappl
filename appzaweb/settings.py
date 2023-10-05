@@ -28,7 +28,7 @@ SECRET_KEY = '9+bee81pz%gpf0g=atx5j$*0@uf^_vw=d8#5-8m8$*%m8fmoxc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://web-production-cf62.up.railway.app']
+ALLOWED_HOSTS = ['']
 
 
 # Application definition
@@ -122,11 +122,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+# change for the deployment on Heroku:
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = "/static/"
 
 
-STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 django_heroku.settings(locals())
 
-CSRF_TRUSTED_ORIGINS = ['https://djangoappl-production.up.railway.app']
+STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
+##CSRF_TRUSTED_ORIGINS = ['https://djangoappl-production.up.railway.app']
