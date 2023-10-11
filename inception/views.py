@@ -27,7 +27,7 @@ def doznaj_datum(ulaz):
 
 ##----------------------------------------------------------------------------------------
 
-class Opterecenje(TemplateView):
+class nba(TemplateView):
     
     template_name='accounts/nba.html'
 
