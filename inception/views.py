@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse,redirect
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-from stan.forms import Raspon,igraci
+from inception.forms import Raspon,igraci
 import pandas as pd
 import urllib.parse
 import requests
