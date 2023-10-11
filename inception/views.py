@@ -29,7 +29,7 @@ def doznaj_datum(ulaz):
 
 class Opterecenje(TemplateView):
     
-    template_name='accounts/opterecenja.html'
+    template_name='accounts/nba.html'
 
     def get(self,request):
         form = igraci()
